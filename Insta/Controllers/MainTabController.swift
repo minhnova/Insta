@@ -17,21 +17,11 @@ class MainTabController: UITabBarController {
         
         setUpView()
         configreViewControllers()
-        checkIfUserIsLoggedIn()
+        //checkIfUserIsLoggedIn()
         //logOut()
     }
     // MARK: - API
     
-    func checkIfUserIsLoggedIn() {
-        if Auth.auth().currentUser == nil {
-            DispatchQueue.main.async {
-                let vc = LoginController()
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                nav.present(vc, animated: true, completion: nil)
-            }
-        }
-    }
     
     func logOut() {
         do {
