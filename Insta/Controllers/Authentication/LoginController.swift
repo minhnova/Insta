@@ -11,6 +11,8 @@ import SnapKit
 
 class LoginController: UIViewController {
     
+    // MARK: - Properties
+    
     private let iconImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "Instagram_logo_white")
@@ -84,6 +86,8 @@ class LoginController: UIViewController {
             let vc = MainTabController()
             vc.modalPresentationStyle = .fullScreen
             self.present(vc, animated: true, completion: nil)
+            
+            
         }
     }
     

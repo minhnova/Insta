@@ -31,9 +31,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         
-        //self.window?.rootViewController = UINavigationController(rootViewController: vc)
+        
+//        let vc = MainTabController()
+//        self.window?.rootViewController = vc
         window?.makeKeyAndVisible()
-        //window?.windowScene = windowScene
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -41,6 +42,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+    }
+    
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
+
+        window.rootViewController = vc
+
+        // add animation
+        UIView.transition(with: window,
+                          duration: 0.5,
+                          options: [.transitionFlipFromLeft],
+                          animations: nil,
+                          completion: nil)
+
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {

@@ -10,24 +10,54 @@ import UIKit
 import Firebase
 
 class MainTabController: UITabBarController {
-    
+    // MARK: - Properties
+    var user:User? {
+        didSet {
+            guard let user = user else { return }
+            configreViewControllers(withUser: user)
+        }
+    }
     // MARK: - View Lifecycle
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        fetchUser()
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fetchUser()
         setUpView()
-        configreViewControllers()
-        //checkIfUserIsLoggedIn()
-       // logOut()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkIfUserIsLoggedIn()
     }
     // MARK: - API
     
+    func fetchUser() {
+        UserService.fetchUser { user in
+            DispatchQueue.main.async {
+                self.user = user
+            }
+            
+        }
+    }
     
+    func checkIfUserIsLoggedIn() {
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                let vc = LoginController()
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController: vc))
+            }
+
+        }
+    }
 
     
     // MARK: - Helpers
     
-    func configreViewControllers() {
+    func configreViewControllers(withUser: User) {
         view.backgroundColor = .white
         let flowLayout = UICollectionViewFlowLayout()
         
@@ -45,16 +75,15 @@ class MainTabController: UITabBarController {
                                                 , unSelectedImage: #imageLiteral(resourceName: "like_unselected"),
                                                 rootViewController:
                                                   NotificationController())
-        let profileFlowLayout = UICollectionViewFlowLayout()
+        let profileVC = ProfileController(user: withUser)
         let profile = templateNavigationController(seletedImage:  #imageLiteral(resourceName: "profile_selected")
                                                    , unSelectedImage: #imageLiteral(resourceName: "profile_unselected"),
-                                                   rootViewController:
-                                                     ProfileController(collectionViewLayout: profileFlowLayout))
+                                                   rootViewController:profileVC)
         viewControllers = [feed, search, imageSelector, noti, profile]
     }
     
     func setUpView() {
-        self.tabBar.backgroundColor = .systemGray
+        self.tabBar.backgroundColor = .white
         tabBar.tintColor = .label
         //navigationController?.bac
     }

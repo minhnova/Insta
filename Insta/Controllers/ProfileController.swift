@@ -15,11 +15,7 @@ private let headerIdentifier = "ProfileHeader"
 class ProfileController: UICollectionViewController {
     
     // MARK: - Properties
-    var user: User? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    var user: User
     
     private lazy var logoutButton: UIButton = {
         let bt = UIButton(type: .system)
@@ -30,11 +26,17 @@ class ProfileController: UICollectionViewController {
     }()
     
     // MARK: - View Lifecycle
+    init(user: User) {
+        self.user = user
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        fetchUser()
     }
     
     // MARK: - API
@@ -42,18 +44,14 @@ class ProfileController: UICollectionViewController {
     @objc func logOut() {
         do {
             try Auth.auth().signOut()
-            self.dismiss(animated: true, completion: nil)
+            let vc = LoginController()
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(UINavigationController(rootViewController: vc))
+            
         } catch {
             print("debug")
         }
     }
     
-    func fetchUser() {
-        UserService.fetchUser { user in
-            self.user = user
-            self.navigationItem.title = user.username
-        }
-    }
     
     // MARK: - Helpers
     func configureUI() {
@@ -67,10 +65,10 @@ class ProfileController: UICollectionViewController {
     }
     
     // MARK: - Actions
-
+    
 }
 
-    // MARK: - UICollectionView Datasource
+// MARK: - UICollectionView Datasource
 
 extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -89,10 +87,10 @@ extension ProfileController {
             fatalError("Can not init cell")
         }
         
-        if let user = user {
-            header.viewModel = ProfileHeaderViewModel(user: user)
-        }
-
+        
+        header.viewModel = ProfileHeaderViewModel(user: user)
+        
+        
         return header
     }
 }
