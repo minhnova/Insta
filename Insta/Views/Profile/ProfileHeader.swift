@@ -7,15 +7,20 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 
 class ProfileHeader: UICollectionReusableView {
     
     // MARK: - Properties
+    var viewModel: ProfileHeaderViewModel? {
+        didSet { configure()}
+    }
+    
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = #imageLiteral(resourceName: "venom-7")
         iv.clipsToBounds = true
+        iv.backgroundColor = .lightGray
         iv.contentMode = .scaleAspectFill
         return iv
     }()
@@ -23,7 +28,6 @@ class ProfileHeader: UICollectionReusableView {
     private let nameLabel:UILabel = {
         let lb = UILabel()
         lb.font = UIFont.boldSystemFont(ofSize: 13)
-        lb.text = "Eddie Brock"
         return lb
         
     }()
@@ -62,6 +66,7 @@ class ProfileHeader: UICollectionReusableView {
         bt.layer.cornerRadius = 3
         bt.setTitleColor(.black, for: .normal)
         bt.addTarget(self, action: #selector(handleEditProfileButtonTapped), for: .touchUpInside)
+        bt.addTarget(self, action: #selector(handleEditProfileButtonTouchDown), for: .touchDown)
         bt.layer.borderColor = UIColor.lightGray.cgColor
         return bt
     }()
@@ -124,6 +129,7 @@ class ProfileHeader: UICollectionReusableView {
             make.right.equalToSuperview().offset(-24)
             make.left.equalToSuperview().offset(24)
         }
+        editProfileButton.bringSubviewToFront(editProfileButton)
         
         let topDivider = UIView()
         topDivider.backgroundColor = .lightGray
@@ -166,6 +172,16 @@ class ProfileHeader: UICollectionReusableView {
     
     // MARK: - Helpers
     
+    func configure() {
+        print("DEBUG - Configre profile header")
+        guard let vm = viewModel else { return }
+        nameLabel.text = vm.fullname
+        if let url = URL(string: vm.profileUrl) {
+            profileImageView.kf.setImage(with: url)
+        }
+        
+    }
+    
     func attributeText(value: Int, label: String) -> NSAttributedString {
         let attText = NSMutableAttributedString(string: "\(value)\n", attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
         
@@ -177,6 +193,12 @@ class ProfileHeader: UICollectionReusableView {
     // MARK: - Actions
     
     @objc func handleEditProfileButtonTapped() {
+        editProfileButton.setTitleColor(UIColor.black, for: .normal)
         print("DEBUG - user tapped!")
+    }
+    
+    @objc func handleEditProfileButtonTouchDown() {
+        print("DEBUG - touch down!")
+        editProfileButton.setTitleColor(UIColor.lightGray, for: .normal)
     }
 }

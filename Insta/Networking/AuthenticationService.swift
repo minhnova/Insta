@@ -19,6 +19,10 @@ struct AuthCredentials {
 
 struct AuthService {
     
+    static func logUserIn(withEmail email: String, password: String, completion: AuthDataResultCallback?) {
+        Auth.auth().signIn(withEmail: email, password: password, completion: completion)
+    }
+    
     static func registerUser(withCredentials credentials: AuthCredentials, completion: @escaping (Error?) -> Void) {
         print("DEBUG - credential \(credentials)")
         
@@ -35,7 +39,7 @@ struct AuthService {
                                          "fullname":credentials.fullname,
                                          "username":credentials.username,
                                          "profileUrl":imgUrl]
-                Firestore.firestore().collection("user").document(userID).setData(data, completion: completion)
+                COLLECTION_USERS.document(userID).setData(data, completion: completion)
             }
         }
         

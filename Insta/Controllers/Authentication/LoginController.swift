@@ -32,10 +32,10 @@ class LoginController: UIViewController {
     private lazy var loginButton: UIButton = {
         var bt = UIButton(type: .system)
         bt.setTitle("Login", for: .normal)
-        bt.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
+        bt.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         bt.setHeight(50)
         bt.layer.cornerRadius = 5
-        
+
         bt.setTitleColor(UIColor(white: 1.0, alpha: 0.6), for: .normal)
         bt.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
         bt.isEnabled = false
@@ -70,6 +70,22 @@ class LoginController: UIViewController {
     }
     
     var loginViewModel = LoginViewModel()
+    
+    // MARK: - API
+    
+    @objc func handleLogin() {
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        AuthService.logUserIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("DEBUG - login fail \(error.localizedDescription)")
+                return
+            }
+            let vc = MainTabController()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
     
     // MARK: - Helpers
     func configureUI() {
@@ -129,6 +145,8 @@ class LoginController: UIViewController {
         } else {
             self.loginViewModel.password = sender.text
         }
+        
+        updateForm()
 
     }
 }
@@ -136,6 +154,7 @@ class LoginController: UIViewController {
 
 extension LoginController: FormViewModel {
     func updateForm() {
+        print("DEBUG  didtaplogin")
         loginButton.setTitleColor(self.loginViewModel.buttonTitleColor, for: .normal)
         loginButton.backgroundColor = self.loginViewModel.buttonBackgroundColor
         loginButton.isEnabled = self.loginViewModel.isFormValid

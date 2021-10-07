@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 private let cellIdentifier = "ProfileCell"
 private let headerIdentifier = "ProfileHeader"
@@ -14,23 +15,54 @@ private let headerIdentifier = "ProfileHeader"
 class ProfileController: UICollectionViewController {
     
     // MARK: - Properties
+    var user: User? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
+    private lazy var logoutButton: UIButton = {
+        let bt = UIButton(type: .system)
+        bt.setTitle("Logout", for: .normal)
+        bt.addTarget(self, action: #selector(logOut), for: .touchUpInside)
+        bt.tintColor = .black
+        return bt
+    }()
     
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        fetchUser()
     }
     
     // MARK: - API
     
+    @objc func logOut() {
+        do {
+            try Auth.auth().signOut()
+            self.dismiss(animated: true, completion: nil)
+        } catch {
+            print("debug")
+        }
+    }
+    
+    func fetchUser() {
+        UserService.fetchUser { user in
+            self.user = user
+            self.navigationItem.title = user.username
+        }
+    }
     
     // MARK: - Helpers
     func configureUI() {
         collectionView.backgroundColor = .systemCyan
         collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: cellIdentifier)
         collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+        let rightBarButton = UIBarButtonItem(customView: logoutButton)
+        self.navigationItem.rightBarButtonItem = rightBarButton
+        //navigationController?.navigationBar.addb
         
     }
     
@@ -38,7 +70,7 @@ class ProfileController: UICollectionViewController {
 
 }
 
-// MARK: - UICollectionView Datasource
+    // MARK: - UICollectionView Datasource
 
 extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -53,11 +85,15 @@ extension ProfileController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let cell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as? ProfileHeader else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier, for: indexPath) as? ProfileHeader else {
             fatalError("Can not init cell")
         }
+        
+        if let user = user {
+            header.viewModel = ProfileHeaderViewModel(user: user)
+        }
 
-        return cell
+        return header
     }
 }
 

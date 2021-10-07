@@ -18,18 +18,12 @@ class MainTabController: UITabBarController {
         setUpView()
         configreViewControllers()
         //checkIfUserIsLoggedIn()
-        //logOut()
+       // logOut()
     }
     // MARK: - API
     
     
-    func logOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print("debug")
-        }
-    }
+
     
     // MARK: - Helpers
     

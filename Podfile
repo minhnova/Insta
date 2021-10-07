@@ -17,6 +17,7 @@ pod 'ActiveLabel'
 pod 'SDWebImage', '~> 5.0'
 pod 'JGProgressHUD'
 pod 'YPImagePicker'
+pod 'Kingfisher', '~> 7.0'
 
 
   target 'InstaTests' do
