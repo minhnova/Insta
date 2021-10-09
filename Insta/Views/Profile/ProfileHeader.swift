@@ -109,7 +109,8 @@ class ProfileHeader: UICollectionReusableView {
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(12)
+            make.centerX.equalTo(profileImageView.snp.centerX)
+            make.left.greaterThanOrEqualToSuperview().offset(4)
         }
         
         let stackView = UIStackView(arrangedSubviews: [postsLabel,followersLabel,followingLabel])
@@ -117,7 +118,6 @@ class ProfileHeader: UICollectionReusableView {
 
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView.snp.centerY)
             make.left.equalTo(profileImageView.snp.right).offset(12)
             make.right.equalToSuperview().offset(-12)
             make.height.equalTo(50)

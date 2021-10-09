@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-            navBarAppearance.backgroundColor = .systemGray
+            navBarAppearance.backgroundColor = .white
             UINavigationBar.appearance().standardAppearance = navBarAppearance
             UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
         }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6DD58847C9CE6A6A8AC83957 /* Pods_InstaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 360DB7C8D49E03A8973EC35F /* Pods_InstaTests.framework */; };
 		DAA3F848888040115D4D334C /* Pods_Insta_InstaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DBAF036CAA6BE81860ED27 /* Pods_Insta_InstaUITests.framework */; };
+		E92611E3270FEFE30049745C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E2270FEFE30049745C /* UserCell.swift */; };
+		E92611E5271027240049745C /* UserCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E4271027240049745C /* UserCellViewModel.swift */; };
 		E9692DF02708146C000965B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DEF2708146C000965B5 /* AppDelegate.swift */; };
 		E9692DF22708146C000965B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DF12708146C000965B5 /* SceneDelegate.swift */; };
 		E9692DF42708146C000965B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DF32708146C000965B5 /* ViewController.swift */; };
@@ -70,6 +72,8 @@
 		94A2B8BF4D28F76FF9E3E175 /* Pods-Insta-InstaUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Insta-InstaUITests.debug.xcconfig"; path = "Target Support Files/Pods-Insta-InstaUITests/Pods-Insta-InstaUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C84D158AFA71D4DE7B0EEF38 /* Pods-InstaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstaTests.release.xcconfig"; path = "Target Support Files/Pods-InstaTests/Pods-InstaTests.release.xcconfig"; sourceTree = "<group>"; };
 		CEF0CFA445F30B01D8B381FF /* Pods-Insta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Insta.release.xcconfig"; path = "Target Support Files/Pods-Insta/Pods-Insta.release.xcconfig"; sourceTree = "<group>"; };
+		E92611E2270FEFE30049745C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		E92611E4271027240049745C /* UserCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellViewModel.swift; sourceTree = "<group>"; };
 		E9692DEC2708146C000965B5 /* Insta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Insta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9692DEF2708146C000965B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9692DF12708146C000965B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -245,6 +249,7 @@
 			children = (
 				E9C59ACA270AD62E00456D8E /* AuthenticationViewModels.swift */,
 				E9A54756270EB8820067F3D1 /* ProfileHeaderViewModel.swift */,
+				E92611E4271027240049745C /* UserCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -275,6 +280,7 @@
 				E9A5474B270D51C10067F3D1 /* Profile */,
 				E9692E412708B41E000965B5 /* FeedCell.swift */,
 				E9C59AC5270AAF7700456D8E /* CustomTextField.swift */,
+				E92611E2270FEFE30049745C /* UserCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -550,7 +556,9 @@
 				E9692E3527083799000965B5 /* NotificationController.swift in Sources */,
 				E9A5474F270D593D0067F3D1 /* ProfileCell.swift in Sources */,
 				E9692DF02708146C000965B5 /* AppDelegate.swift in Sources */,
+				E92611E3270FEFE30049745C /* UserCell.swift in Sources */,
 				E9692E422708B41E000965B5 /* FeedCell.swift in Sources */,
+				E92611E5271027240049745C /* UserCellViewModel.swift in Sources */,
 				E9C59ACB270AD62E00456D8E /* AuthenticationViewModels.swift in Sources */,
 				E9692E37270837B1000965B5 /* ImageSelectorController.swift in Sources */,
 				E9A54751270E83BB0067F3D1 /* UserService.swift in Sources */,

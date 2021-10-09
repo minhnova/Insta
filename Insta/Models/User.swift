@@ -16,7 +16,7 @@ struct User {
     
     init(dictionary: [String: Any]) {
         self.email = dictionary["email"] as? String ?? ""
-        self.fullname = dictionary["email"] as? String ?? ""
+        self.fullname = dictionary["fullname"] as? String ?? ""
         self.profileImageUrl = dictionary["profileUrl"] as? String ?? ""
         self.username = dictionary["username"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""   
