@@ -13,6 +13,7 @@ private let cellIdentifier = "ProfileCell"
 private let headerIdentifier = "ProfileHeader"
 
 class ProfileController: UICollectionViewController {
+  
     
     // MARK: - Properties
     var user: User
@@ -37,9 +38,26 @@ class ProfileController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        checkIfUserIsFollowed()
+        fetchUserStats()
     }
     
     // MARK: - API
+    
+    func checkIfUserIsFollowed() {
+        UserService.checkUserIsFollowed(uid: self.user.uid) { status in
+            self.user.isFollowed = status
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStats() {
+        UserService.getUserStats(uid: self.user.uid) { userStats in
+            self.user.stats = userStats
+            self.collectionView.reloadData()
+            print("DEBUG - user Stat \(userStats)")
+        }
+    }
     
     @objc func logOut() {
         do {
@@ -79,6 +97,7 @@ extension ProfileController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? ProfileCell else {
             fatalError("Can not init cell")
         }
+        //cell.backgroundColor = .systemRed
         return cell
     }
     
@@ -87,7 +106,7 @@ extension ProfileController {
             fatalError("Can not init cell")
         }
         
-        
+        header.delegate = self
         header.viewModel = ProfileHeaderViewModel(user: user)
         
         
@@ -95,12 +114,6 @@ extension ProfileController {
     }
 }
 
-
-// MARK: - UICollectionView Delegate
-
-extension ProfileController {
-    
-}
 
 // MARK: - UICollectionView DataFlow
 
@@ -122,6 +135,34 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
         let width = (self.view.frame.width - 2) / 3
         
         return CGSize(width: width, height: width)
+    }
+    
+}
+
+// MARK: - ProfileHeaderDelegate
+
+extension ProfileController: ProfileHeaderDelegate {
+    func header(_ profileHeader: ProfileHeader, didTapActionFor user: User) {
+        print("DEBUG - ProfileHeaderDelegate")
+        
+        if user.isCurrentUser {
+            print("DEBUG - edit current user")
+        } else if (user.isFollowed) {
+            UserService.unFollow(uid: self.user.uid) { error in
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+                print("DEBUG -  did unFollow ")
+            }
+            print("DEBUG - unfollow")
+            
+        } else {
+            UserService.follow(uid: self.user.uid) { error in
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+                print("DEBUG -  did follow ")
+            }
+            
+        }
     }
     
 }

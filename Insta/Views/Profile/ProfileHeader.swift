@@ -10,9 +10,15 @@ import SnapKit
 import Kingfisher
 
 
+protocol ProfileHeaderDelegate: AnyObject {
+    func header(_ profileHeader: ProfileHeader, didTapActionFor user: User)
+}
+
 class ProfileHeader: UICollectionReusableView {
     
     // MARK: - Properties
+    
+    var delegate: ProfileHeaderDelegate?
     var viewModel: ProfileHeaderViewModel? {
         didSet { configure()}
     }
@@ -36,7 +42,7 @@ class ProfileHeader: UICollectionReusableView {
         let lb = UILabel()
         lb.numberOfLines = 0
         lb.textAlignment = .center
-        lb.attributedText = attributeText(value: 1, label: "posts")
+       // lb.attributedText = attributeText(value: 1, label: "posts")
         return lb
         
     }()
@@ -45,7 +51,7 @@ class ProfileHeader: UICollectionReusableView {
         let lb = UILabel()
         lb.numberOfLines = 0
         lb.textAlignment = .center
-        lb.attributedText = attributeText(value: 100, label: "followers")
+        //lb.attributedText = attributeText(value: 100, label: "followers")
         return lb
         
     }()
@@ -54,7 +60,7 @@ class ProfileHeader: UICollectionReusableView {
         let lb = UILabel()
         lb.numberOfLines = 0
         lb.textAlignment = .center
-        lb.attributedText = attributeText(value: 12, label: "following")
+        //lb.attributedText = attributeText(value: 12, label: "following")
         return lb
     }()
     
@@ -173,28 +179,26 @@ class ProfileHeader: UICollectionReusableView {
     // MARK: - Helpers
     
     func configure() {
-        print("DEBUG - Configre profile header")
         guard let vm = viewModel else { return }
         nameLabel.text = vm.fullname
         if let url = URL(string: vm.profileUrl) {
             profileImageView.kf.setImage(with: url)
         }
+        editProfileButton.setTitle(viewModel?.followeButtonText, for: .normal)
+        editProfileButton.backgroundColor = viewModel?.followButtonBackgrounColor
+        editProfileButton.setTitleColor(viewModel?.followButtonTextColor, for: .normal)
         
-    }
-    
-    func attributeText(value: Int, label: String) -> NSAttributedString {
-        let attText = NSMutableAttributedString(string: "\(value)\n", attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
-        
-        attText.append(NSMutableAttributedString(string: label, attributes: [.font: UIFont.boldSystemFont(ofSize: 14), .foregroundColor: UIColor.lightGray]))
-        
-        return attText
+        followersLabel.attributedText = vm.followerAttText
+        followingLabel.attributedText = vm.followingrAttText
+        postsLabel.attributedText = vm.numberfPost
     }
     
     // MARK: - Actions
     
     @objc func handleEditProfileButtonTapped() {
         editProfileButton.setTitleColor(UIColor.black, for: .normal)
-        print("DEBUG - user tapped!")
+        guard let viewModel = viewModel else { return }
+        delegate?.header(self, didTapActionFor: viewModel.user)
     }
     
     @objc func handleEditProfileButtonTouchDown() {
