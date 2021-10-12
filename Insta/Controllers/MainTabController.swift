@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Firebase
+import YPImagePicker
 
 class MainTabController: UITabBarController {
     // MARK: - Properties
@@ -59,6 +60,7 @@ class MainTabController: UITabBarController {
     
     func configreViewControllers(withUser: User) {
         view.backgroundColor = .white
+        self.delegate = self
         let flowLayout = UICollectionViewFlowLayout()
         
         let feed = templateNavigationController(seletedImage:  #imageLiteral(resourceName: "home_selected")
@@ -95,5 +97,52 @@ class MainTabController: UITabBarController {
         nav.navigationBar.tintColor = .blue
         nav.tabBarController?.tabBar.tintColor = .systemCyan
         return nav
+    }
+    
+    func didiFinishPickingMedia(_ picker: YPImagePicker) {
+        picker.didFinishPicking { items, cancelled in
+            picker.dismiss(animated: true) {
+                guard let selectedImage = items.singlePhoto?.image else { return }
+                print("DEBUG - did finish picking photo")
+                let controler = UploadPostController()
+                controler.delegate = self
+                controler.selectedImage = selectedImage
+                let nav = UINavigationController(rootViewController: controler)
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+                
+            }
+        }
+    }
+}
+
+extension MainTabController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let index = viewControllers?.firstIndex(of: viewController)
+        if (index == 2) {
+            var config = YPImagePickerConfiguration()
+            config.library.mediaType = .photo
+            config.shouldSaveNewPicturesToAlbum = false
+            config.startOnScreen = .library
+            config.screens = [.library]
+            config.hidesStatusBar = false
+            config.hidesBottomBar = false
+            config.library.maxNumberOfItems = 1
+        
+            let picker = YPImagePicker(configuration: config)
+            picker.modalPresentationStyle = .fullScreen
+            present(picker, animated: true, completion: nil)
+            
+            didiFinishPickingMedia(picker)
+            
+        }
+        return true
+    }
+}
+
+extension MainTabController: UploadPostControllerDelegate {
+    func didFinshUploadPost(controller: UIViewController) {
+        self.selectedIndex = 0
+        controller.dismiss(animated: true, completion: nil)
     }
 }

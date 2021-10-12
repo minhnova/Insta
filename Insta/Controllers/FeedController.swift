@@ -10,15 +10,32 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 class FeedController: UICollectionViewController {
+  
+    // MARK: - Properties
+    
+    
+    // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        getAllPost()
     }
+    
+    // MARK: - API
+    
+    func getAllPost(){
+        PostService.fetchAllPosts()
+    }
+    
+    // MARK: - Helpers
+    
     func setupView() {
         collectionView.backgroundColor = .white
         collectionView.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
+    
+    // MARK: - Actions
 }
 
 extension FeedController {

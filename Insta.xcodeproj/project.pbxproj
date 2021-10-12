@@ -11,6 +11,9 @@
 		DAA3F848888040115D4D334C /* Pods_Insta_InstaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DBAF036CAA6BE81860ED27 /* Pods_Insta_InstaUITests.framework */; };
 		E92611E3270FEFE30049745C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E2270FEFE30049745C /* UserCell.swift */; };
 		E92611E5271027240049745C /* UserCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E4271027240049745C /* UserCellViewModel.swift */; };
+		E92611E72712FA610049745C /* UploadPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E62712FA610049745C /* UploadPostController.swift */; };
+		E92611E9271443730049745C /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611E8271443730049745C /* CustomTextView.swift */; };
+		E92611EB27148C6F0049745C /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92611EA27148C6F0049745C /* PostService.swift */; };
 		E9692DF02708146C000965B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DEF2708146C000965B5 /* AppDelegate.swift */; };
 		E9692DF22708146C000965B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DF12708146C000965B5 /* SceneDelegate.swift */; };
 		E9692DF42708146C000965B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9692DF32708146C000965B5 /* ViewController.swift */; };
@@ -74,6 +77,9 @@
 		CEF0CFA445F30B01D8B381FF /* Pods-Insta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Insta.release.xcconfig"; path = "Target Support Files/Pods-Insta/Pods-Insta.release.xcconfig"; sourceTree = "<group>"; };
 		E92611E2270FEFE30049745C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		E92611E4271027240049745C /* UserCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellViewModel.swift; sourceTree = "<group>"; };
+		E92611E62712FA610049745C /* UploadPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostController.swift; sourceTree = "<group>"; };
+		E92611E8271443730049745C /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
+		E92611EA27148C6F0049745C /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		E9692DEC2708146C000965B5 /* Insta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Insta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9692DEF2708146C000965B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E9692DF12708146C000965B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -240,6 +246,7 @@
 				E9692E322708377D000965B5 /* FeedController.swift */,
 				E9692E3427083799000965B5 /* NotificationController.swift */,
 				E9692E36270837B1000965B5 /* ImageSelectorController.swift */,
+				E92611E62712FA610049745C /* UploadPostController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -260,6 +267,7 @@
 				E9C59ACE270B555200456D8E /* ImageUploader.swift */,
 				E9C59AD0270B587300456D8E /* AuthenticationService.swift */,
 				E9A54750270E83BB0067F3D1 /* UserService.swift */,
+				E92611EA27148C6F0049745C /* PostService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -270,6 +278,7 @@
 				E9692E3C2708A881000965B5 /* Utility.swift */,
 				E9692E3E2708B399000965B5 /* Extensions.swift */,
 				E9A54752270E84110067F3D1 /* Constants.swift */,
+				E92611E8271443730049745C /* CustomTextView.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -543,6 +552,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E92611E9271443730049745C /* CustomTextView.swift in Sources */,
+				E92611E72712FA610049745C /* UploadPostController.swift in Sources */,
 				E9692E47270A096B000965B5 /* RegistrationController.swift in Sources */,
 				E9A54753270E84110067F3D1 /* Constants.swift in Sources */,
 				E9A5474D270D51D10067F3D1 /* ProfileHeader.swift in Sources */,
@@ -561,6 +572,7 @@
 				E92611E5271027240049745C /* UserCellViewModel.swift in Sources */,
 				E9C59ACB270AD62E00456D8E /* AuthenticationViewModels.swift in Sources */,
 				E9692E37270837B1000965B5 /* ImageSelectorController.swift in Sources */,
+				E92611EB27148C6F0049745C /* PostService.swift in Sources */,
 				E9A54751270E83BB0067F3D1 /* UserService.swift in Sources */,
 				E9692E2D27081743000965B5 /* MainTabController.swift in Sources */,
 				E9692DF22708146C000965B5 /* SceneDelegate.swift in Sources */,

@@ -15,7 +15,7 @@ class ProfileCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "venom-7")
         iv.clipsToBounds = true
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     

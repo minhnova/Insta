@@ -16,7 +16,7 @@ class LoginController: UIViewController {
     private let iconImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "Instagram_logo_white")
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     

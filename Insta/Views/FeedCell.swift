@@ -13,7 +13,7 @@ class FeedCell: UICollectionViewCell {
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
         iv.image = #imageLiteral(resourceName: "venom-7")
@@ -52,7 +52,7 @@ class FeedCell: UICollectionViewCell {
     
     private let postImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
         iv.image = #imageLiteral(resourceName: "venom-7")
