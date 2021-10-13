@@ -17,6 +17,8 @@ class UploadPostController: UIViewController {
     
     // MARK: - Properties
     weak var delegate: UploadPostControllerDelegate?
+    
+    var currentUser: User?
     var selectedImage: UIImage? {
         didSet { photoImageView.image = selectedImage }
     }
@@ -30,7 +32,7 @@ class UploadPostController: UIViewController {
     
     private let photoImageView: UIImageView =  {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
@@ -57,10 +59,10 @@ class UploadPostController: UIViewController {
     
     func uploadPost() {
         guard let img = selectedImage else { return }
-        
+        guard let user = self.currentUser else { return }
         self.showLoader(true)
         
-        PostService.uploadPost(caption: self.postCaption.text, image: img) { error in
+        PostService.uploadPost(caption: self.postCaption.text, image: img, user: user) { error in
             self.showLoader(false)
             if let error = error {
                 print("DEBUG - post error \(error.localizedDescription)")

@@ -11,7 +11,7 @@ import Firebase
 
 struct PostService {
     
-    static func uploadPost(caption: String, image: UIImage, completion: @escaping (FireStoreCompletion)) {
+    static func uploadPost(caption: String, image: UIImage, user: User,  completion: @escaping (FireStoreCompletion)) {
         
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         
@@ -20,19 +20,37 @@ struct PostService {
                                       "timestamp": Timestamp(date: Date()),
                                       "likes":0,
                                       "imageUrl":imgUrl,
-                                      "ownerID":userUid]
+                                      "ownerID":userUid,
+                                      "ownerUsername": user.username,
+                                      "ownerImageUrl": user.profileImageUrl]
             COLLECTION_POST.addDocument(data: data, completion: completion)
         }
         
     }
     
-    static func fetchAllPosts() {
-        COLLECTION_POST.getDocuments { snapshot, error in
+    static func fetchAllPosts(completion: @escaping ([Post])-> Void) {
+        COLLECTION_POST.order(by: "timestamp", descending: true).getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else { return }
             
-            documents.forEach { post in
-                print("DEBUG - Post \(post.data())")
+            let posts = documents.map({ Post(postId: $0.documentID, dictionary: $0.data()) })
+            
+            completion(posts)
+        }
+    }
+    
+    static func fetchPosts(forUser userID: String, completion: @escaping ([Post])-> Void) {
+        let query = COLLECTION_POST
+            .whereField("ownerID", isEqualTo: userID)
+        
+        query.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents else { return }
+            
+            var posts = documents.map({ Post(postId: $0.documentID, dictionary: $0.data()) })
+            posts.sort {
+                $0.timestamp.seconds > $1.timestamp.seconds
             }
+            
+            completion(posts)
         }
     }
     

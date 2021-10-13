@@ -17,6 +17,7 @@ class ProfileController: UICollectionViewController {
     
     // MARK: - Properties
     var user: User
+    var posts = [Post]()
     
     private lazy var logoutButton: UIButton = {
         let bt = UIButton(type: .system)
@@ -40,6 +41,7 @@ class ProfileController: UICollectionViewController {
         configureUI()
         checkIfUserIsFollowed()
         fetchUserStats()
+        fetchUserPosts()
     }
     
     // MARK: - API
@@ -59,6 +61,14 @@ class ProfileController: UICollectionViewController {
         }
     }
     
+    func fetchUserPosts() {
+        self.showLoader(true)
+        PostService.fetchPosts(forUser: self.user.uid) { posts in
+            self.showLoader(false)
+            self.posts = posts
+            self.collectionView.reloadData()
+        }
+    }
     @objc func logOut() {
         do {
             try Auth.auth().signOut()
@@ -86,18 +96,28 @@ class ProfileController: UICollectionViewController {
     
 }
 
+extension ProfileController {
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("didSelectItemAt")
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        feed.post = self.posts[indexPath.row]
+        navigationController?.pushViewController(feed, animated: true)
+    }
+}
+
 // MARK: - UICollectionView Datasource
 
 extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return self.posts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? ProfileCell else {
             fatalError("Can not init cell")
         }
-        //cell.backgroundColor = .systemRed
+        cell.postViewModel = PostViewModel(post: posts[indexPath.row])
         return cell
     }
     

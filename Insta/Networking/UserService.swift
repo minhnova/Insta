@@ -54,7 +54,6 @@ struct UserService {
     }
     
     static func getUserStats(uid: String, completion: @escaping (UserStats) -> Void) {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         COLLECTION_FOLLOWING.document(uid).collection("user-following").getDocuments { snapshot, _ in
             let following = snapshot?.documents.count ?? 0
@@ -62,8 +61,13 @@ struct UserService {
             COLLECTION_FOLLOWERS.document(uid).collection("user-follower").getDocuments { snapshot, _ in
                 let follower = snapshot?.documents.count ?? 0
                 
-                let userStat = UserStats(followers: follower, following: following)
-                completion(userStat)
+                COLLECTION_POST.whereField("ownerID", isEqualTo: uid).getDocuments { snapshot, error in
+                    let posts = snapshot?.documents.count ?? 0
+                    let userStat = UserStats(followers: follower, following: following, posts: posts)
+                    completion(userStat)
+                }
+                
+ 
             }
         }
     }

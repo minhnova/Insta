@@ -27,7 +27,7 @@ class ProfileHeader: UICollectionReusableView {
         let iv = UIImageView()
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         return iv
     }()
     
@@ -191,6 +191,7 @@ class ProfileHeader: UICollectionReusableView {
         followersLabel.attributedText = vm.followerAttText
         followingLabel.attributedText = vm.followingrAttText
         postsLabel.attributedText = vm.numberfPost
+        
     }
     
     // MARK: - Actions

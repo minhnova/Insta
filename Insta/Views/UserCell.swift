@@ -19,7 +19,7 @@ class UserCell: UITableViewCell {
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "venom-7")
         iv.backgroundColor = .lightGray

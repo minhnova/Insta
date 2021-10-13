@@ -8,21 +8,24 @@
 import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
 
 class FeedCell: UICollectionViewCell {
     
+    var postViewModel: PostViewModel? {
+        didSet { configure() }
+    }
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-        iv.image = #imageLiteral(resourceName: "venom-7")
+        iv.backgroundColor = UIColor.lightGray
         return iv
     }()
     
     private lazy var userNameButton:UIButton = {
         let bt = UIButton(type: .system)
-        bt.setTitle("Venom", for: .normal)
         bt.setTitleColor(.black, for: .normal)
         bt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         bt.addTarget(self, action: #selector(didTapUserName), for: .touchUpInside)
@@ -52,30 +55,27 @@ class FeedCell: UICollectionViewCell {
     
     private let postImageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-        iv.image = #imageLiteral(resourceName: "venom-7")
+        iv.backgroundColor = UIColor.lightGray
         return iv
     }()
     
     private let likesLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "1 like"
         lbl.font = UIFont.boldSystemFont(ofSize: 13)
         return lbl
     }()
     
     private let captionLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Some test caption for now..."
         lbl.font = UIFont.systemFont(ofSize: 14)
         return lbl
     }()
     
     private let postTimeLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "2 days ago..."
         lbl.font = UIFont.systemFont(ofSize: 12)
         lbl.textColor = .lightGray
         return lbl
@@ -142,6 +142,26 @@ class FeedCell: UICollectionViewCell {
         self.bringSubviewToFront(likeButton)
         self.bringSubviewToFront(commentButton)
         self.bringSubviewToFront(shareButton)
+    }
+    
+    func configure() {
+        guard let post = postViewModel else { return }
+        
+        if let imgURL = URL(string: post.imageURL) {
+            postImageView.kf.setImage(with: imgURL)
+        }
+        
+        self.captionLabel.text = post.caption
+        self.likesLabel.text = post.postLikeLabelText
+        //self.postTimeLabel.text = post.
+        
+        self.userNameButton.setTitle(post.ownerUsername, for: .normal)
+        
+        if let imgURL = URL(string: post.ownerImageUrl) {
+            profileImageView.kf.setImage(with: imgURL)
+        }
+        
+        
     }
     
     required init?(coder: NSCoder) {

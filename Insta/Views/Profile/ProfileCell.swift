@@ -7,15 +7,20 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class ProfileCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    var postViewModel: PostViewModel? {
+        didSet { configure() }
+    }
     private let postImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "venom-7")
         iv.clipsToBounds = true
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         return iv
     }()
     
@@ -37,7 +42,14 @@ class ProfileCell: UICollectionViewCell {
     
     
     // MARK: - Helpers
+    func configure() {
+        guard let viewModel = postViewModel else { return }
+        if let imageUrl = URL(string: viewModel.imageURL) {
+            postImageView.kf.setImage(with: imageUrl)
+        }
+    }
     
     
     // MARK: - Actions
+    
 }
