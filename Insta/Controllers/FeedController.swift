@@ -12,7 +12,9 @@ private let reuseIdentifier = "Cell"
 class FeedController: UICollectionViewController {
   
     // MARK: - Properties
-    var posts = [Post]()
+   private var posts = [Post]() {
+       didSet{collectionView.reloadData()}
+    }
     var post: Post?
     
     // MARK: - View Lifecycle
@@ -31,12 +33,25 @@ class FeedController: UICollectionViewController {
         PostService.fetchAllPosts { posts in
             DispatchQueue.main.async {
                 self.posts = posts
+                self.checkIfUserLikePosts()
                 self.collectionView.refreshControl?.endRefreshing()
                 self.collectionView.reloadData()
                 
             }
 
         }
+    }
+    
+    func checkIfUserLikePosts() {
+        self.posts.forEach { post in
+            PostService.checkIfUserLikedPost(post: post) { didLike in
+                if let index = self.posts.firstIndex(where: { $0.postId == post.postId }) {
+                    self.posts[index].didLike = didLike
+                }
+                    
+            }
+        }
+
     }
     
     // MARK: - Helpers
@@ -74,9 +89,12 @@ extension FeedController {
             cell.postViewModel = PostViewModel(post: posts[indexPath.row])
         }
         
+        cell.delegate = self
         return cell
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -86,11 +104,48 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: height)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0.5
-//    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
 
+}
+
+// MARK: - FeedCellDelegate
+
+extension FeedController: FeedCellDelegate {
+    func cell(_ cell: FeedCell, wantToShowUserProfileFor uid: String) {
+        UserService.fetchUser(withUid: uid) { user in
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func cell(_ cell: FeedCell, wantToShowCommentsFor post: Post) {
+        print("DEBUG - FeedCellDelegate")
+        
+        
+        let controller = CommentController(post: post)
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func cell(_ cell: FeedCell, didLikePost post: Post) {
+        cell.postViewModel?.post.didLike.toggle()
+        if post.didLike {
+            PostService.unLikePost(post: post) { _ in
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                cell.likeButton.tintColor = .black
+                cell.postViewModel?.post.likes = post.likes - 1
+            }
+        } else {
+            PostService.likePost(post: post) { _ in
+                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                cell.likeButton.tintColor = .red
+                cell.postViewModel?.post.likes = post.likes + 1
+            }
+        }
+    }
+    
+    
+    
 }

@@ -14,20 +14,33 @@ class CustomTextView: UITextView {
         didSet { placeHolderLabel.text = placeHolderText}
     }
     
-    private let placeHolderLabel: UILabel = {
+    let placeHolderLabel: UILabel = {
         let lb = UILabel()
         lb.textColor = UIColor.lightGray
         lb.font = UIFont.systemFont(ofSize: 16)
         return lb
     }()
     
+    var shouldCenterPlaceHolder = true {
+        didSet {
+            if shouldCenterPlaceHolder {
+                placeHolderLabel.snp.makeConstraints { make in
+                    make.centerY.equalToSuperview()
+                    make.left.right.equalToSuperview().offset(8)
+                }
+            } else {
+                placeHolderLabel.snp.makeConstraints { make in
+                    make.top.equalToSuperview().offset(8)
+                    make.left.equalToSuperview().offset(8)
+                }
+            }
+        }
+    }
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer) 
         addSubview(placeHolderLabel)
-        placeHolderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.left.equalToSuperview().offset(8)
-        }
+
         
         NotificationCenter.default.addObserver(self, selector: #selector(textViewDidChange), name: UITextView.textDidChangeNotification, object: nil)
     }

@@ -43,6 +43,7 @@ class UploadPostController: UIViewController {
         tv.placeHolderText = "Enter caption here"
         tv.font = UIFont.systemFont(ofSize: 16)
         tv.delegate = self
+        tv.shouldCenterPlaceHolder = false
         return tv
     }()
     

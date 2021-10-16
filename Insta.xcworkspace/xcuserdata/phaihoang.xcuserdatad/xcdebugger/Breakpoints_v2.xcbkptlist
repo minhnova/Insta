@@ -39,32 +39,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "669A5A49-D2EC-4574-8B00-FB2E395005B3"
+            uuid = "CD117816-4955-44F0-8A5C-BACDA2E48A89"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Insta/Controllers/FeedController.swift"
+            filePath = "Insta/Views/CommentInputAccessoryView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "collectionView(_:cellForItemAt:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "handleCommentPost()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "56A2705F-EF3A-4ACB-A8F2-2DBDEB48D384"
+            uuid = "277BD12B-4F10-4893-8960-CFFA4C547055"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Insta/Controllers/FeedController.swift"
+            filePath = "Insta/Controllers/MainTabController.swift"
+            startingColumnNumber = "25"
+            endingColumnNumber = "42"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "configreViewControllers(withUser:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C3EA3CC2-B49C-4EBE-B6E5-288F2E0FA8D3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Insta/Views/FeedCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "collectionView(_:cellForItemAt:)"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "showUserProfile()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -10,17 +10,27 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol FeedCellDelegate: AnyObject {
+    func cell(_ cell: FeedCell, wantToShowCommentsFor post: Post)
+    func cell(_ cell: FeedCell, didLikePost post: Post)
+    func cell(_ cell: FeedCell, wantToShowUserProfileFor uid:String)
+}
+
 class FeedCell: UICollectionViewCell {
     
+    weak var delegate: FeedCellDelegate?
     var postViewModel: PostViewModel? {
         didSet { configure() }
     }
-    private let profileImageView: UIImageView = {
+    private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
         iv.backgroundColor = UIColor.lightGray
+        iv.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(showUserProfile))
+        iv.addGestureRecognizer(tap)
         return iv
     }()
     
@@ -28,13 +38,13 @@ class FeedCell: UICollectionViewCell {
         let bt = UIButton(type: .system)
         bt.setTitleColor(.black, for: .normal)
         bt.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-        bt.addTarget(self, action: #selector(didTapUserName), for: .touchUpInside)
+        bt.addTarget(self, action: #selector(showUserProfile), for: .touchUpInside)
         return bt
     }()
     
-    private lazy var likeButton: UIButton = {
+    lazy var likeButton: UIButton = {
         let bt = UIButton(type: .system)
-        bt.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+        bt.addTarget(self, action: #selector(handleDidTapComment), for: .touchUpInside)
         bt.tintColor = .black
         return bt
     }()
@@ -42,6 +52,7 @@ class FeedCell: UICollectionViewCell {
     private lazy var commentButton: UIButton = {
         let bt = UIButton(type: .system)
         bt.setImage(#imageLiteral(resourceName: "comment"), for: .normal)
+        bt.addTarget(self, action: #selector(handleCommentButtonTapped), for: .touchUpInside)
         bt.tintColor = .black
         return bt
     }()
@@ -125,8 +136,13 @@ class FeedCell: UICollectionViewCell {
             make.top.equalTo(captionLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
         }
-        
-        
+        bringSubviewToFront(userNameButton)
+        bringSubviewToFront(profileImageView)
+
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func configureStackView() {
@@ -160,14 +176,25 @@ class FeedCell: UICollectionViewCell {
         if let imgURL = URL(string: post.ownerImageUrl) {
             profileImageView.kf.setImage(with: imgURL)
         }
+        likeButton.setImage(post.likeButtonImage, for: .normal)
+        likeButton.tintColor = post.likeButtonTintColor
         
         
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // MARK: - Actions
+    @objc func handleCommentButtonTapped() {
+        guard let viewModel = postViewModel else { return }
+        self.delegate?.cell(self, wantToShowCommentsFor: viewModel.post)
     }
-    @objc func didTapUserName() {
-        print("DEBUG - did tap user name")
+
+    @objc func showUserProfile() {
+        guard let viewModel = postViewModel else { return }
+        self.delegate?.cell(self, wantToShowUserProfileFor: viewModel.ownerID)
+    }
+    
+    @objc func handleDidTapComment() {
+        guard let viewModel = postViewModel else { return }
+        self.delegate?.cell(self, didLikePost: viewModel.post)
     }
 }

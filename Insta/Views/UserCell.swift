@@ -21,7 +21,6 @@ class UserCell: UITableViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.image = #imageLiteral(resourceName: "venom-7")
         iv.backgroundColor = .lightGray
         iv.setDimensions(height: 48, width: 48)
         iv.layer.cornerRadius = 48 / 2
@@ -30,14 +29,12 @@ class UserCell: UITableViewCell {
     
     private let usernameLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "Venom"
         lb.font = UIFont.boldSystemFont(ofSize: 16)
         return lb
     }()
     
     private let fullnameLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "Eddie Brock"
         lb.font = UIFont.boldSystemFont(ofSize: 16)
         lb.textColor = .lightGray
         return lb

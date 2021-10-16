@@ -54,4 +54,33 @@ struct PostService {
         }
     }
     
+    static func likePost(post: Post, completion: @escaping (FireStoreCompletion)) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        COLLECTION_POST.document(post.postId).updateData(["likes": post.likes + 1])
+        COLLECTION_POST.document(post.postId).collection("post-likes").document(userId).setData([:]) { _ in
+            COLLECTION_USERS.document(userId).collection("user-likes").document(post.postId).setData([:], completion: completion)
+        }
+    }
+    
+    static func unLikePost(post: Post, completion: @escaping (FireStoreCompletion)) {
+        guard post.likes > 0 else { return }
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        COLLECTION_POST.document(post.postId).updateData(["likes": post.likes - 1])
+        COLLECTION_POST.document(post.postId).collection("post-likes").document(userId).delete { _ in
+            COLLECTION_USERS.document(userId).collection("user-likes").document(post.postId).delete(completion: completion)
+        }
+    }
+    
+    static func checkIfUserLikedPost(post: Post, completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        COLLECTION_USERS.document(userId).collection("user-likes").document(post.postId).getDocument { snapshot, _ in
+            guard let didLike = snapshot?.exists else { return }
+            completion(didLike)
+        }
+        
+    }
+    
 }

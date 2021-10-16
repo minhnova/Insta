@@ -10,12 +10,14 @@ import UIKit
 
 struct PostViewModel {
     
-    private let post: Post
+    var post: Post
     
     var caption: String {
         return post.caption
     }
-    
+    var ownerID: String {
+        return post.ownerID
+    }
     var imageURL: String {
         return post.imageUrl
     }
@@ -24,8 +26,16 @@ struct PostViewModel {
         return post.likes
     }
     
+    var likeButtonTintColor: UIColor {
+        return post.didLike ? .red : .black
+    }
+    
+    var likeButtonImage: UIImage {
+        return post.didLike ? #imageLiteral(resourceName: "like_selected"): #imageLiteral(resourceName: "like_unselected")
+    }
+    
     var postLikeLabelText: String {
-        if (likes != 1) {
+        if (likes <= 1) {
             return "\(post.likes) like"
         } else {
             return "\(post.likes) likes"

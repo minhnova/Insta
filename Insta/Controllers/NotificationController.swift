@@ -8,10 +8,44 @@
 import Foundation
 import UIKit
 
-class NotificationController: UIViewController {
+
+
+private let reuseIdentifier = "NotificationCell"
+class NotificationController: UITableViewController {
     
+    // MARK: - Properties
+    
+    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemMint
+        configureTableView()
+    }
+    
+    // MARK: - API
+    
+    
+    // MARK: - Helpers
+    func configureTableView() {
+        tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 80
+    }
+    
+    // MARK: - Actions
+}
+
+extension NotificationController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? NotificationCell else {
+            fatalError()
+            
+        }
+        
+        return cell
     }
 }

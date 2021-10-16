@@ -81,7 +81,6 @@ extension SearchController {
 extension SearchController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(users[indexPath.row].username)
         let user = isSearchActive ? filteredUsers[indexPath.row] : users[indexPath.row]
         let propfileVc = ProfileController(user: user)
         navigationController?.pushViewController(propfileVc, animated: true)

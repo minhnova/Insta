@@ -12,17 +12,13 @@ import YPImagePicker
 
 class MainTabController: UITabBarController {
     // MARK: - Properties
-    var user:User? {
+    var user: User? {
         didSet {
             guard let user = user else { return }
             configreViewControllers(withUser: user)
         }
     }
     // MARK: - View Lifecycle
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        fetchUser()
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,11 +33,11 @@ class MainTabController: UITabBarController {
     // MARK: - API
     
     func fetchUser() {
-        UserService.fetchUser { user in
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserService.fetchUser(withUid: uid) { user in
             DispatchQueue.main.async {
                 self.user = user
             }
-            
         }
     }
     
